@@ -1,4 +1,4 @@
-package com.example.investment_api.member.controller.dto;
+package com.example.investment_api.member.ui.auth.dto;
 
 public record SignUpResponse(
         Long id,

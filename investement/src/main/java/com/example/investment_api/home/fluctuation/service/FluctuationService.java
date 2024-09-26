@@ -3,7 +3,7 @@ package com.example.investment_api.home.fluctuation.service;
 
 import com.example.investment_api.home.fluctuation.controller.dto.response.FluctuationDTO;
 
-import com.example.investment_api.home.fluctuation.infrastructor.FluctuationParser;
+import com.example.investment_api.home.fluctuation.infrastructure.FluctuationParser;
 
 import com.example.investment_api.home.fluctuation.service.client.FluctuationDataFetcher;
 

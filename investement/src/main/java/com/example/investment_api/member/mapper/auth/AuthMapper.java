@@ -1,11 +1,10 @@
-package com.example.investment_api.member.mapper;
+package com.example.investment_api.member.mapper.auth;
 
-import com.example.investment_api.member.controller.dto.SignUpRequest;
-import com.example.investment_api.member.controller.dto.SignUpResponse;
+import com.example.investment_api.member.domain.member.Member;
+import com.example.investment_api.member.ui.auth.dto.SignUpRequest;
+import com.example.investment_api.member.ui.auth.dto.SignUpResponse;
 
-import com.example.investment_api.member.domain.Member;
-
-public class MemberMapper {
+public class AuthMapper {
 
     public static Member toMember(SignUpRequest signUpRequest) {
         return new Member(
