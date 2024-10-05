@@ -26,8 +26,7 @@ public class AuthService {
         Member member = AuthMapper.toMember(signUpRequest);
         checkDuplicateMemberNickName(member.getMemberNickName());
         checkDuplicateMemberEmail(member.getMemberEmail());
-        memberJpaRepository.save(member);
-        return member;
+        return memberJpaRepository.save(member);
     }
 
     private void checkDuplicateMemberNickName(String nickName) {
