@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthService {
 
     private final MemberJpaRepository memberJpaRepository;
@@ -41,7 +42,6 @@ public class AuthService {
         }
     }
 
-    @Transactional(readOnly = true)
     public String login(LoginRequest loginRequest) {
         Member member = findMemberByEmail(loginRequest.memberEmail());
         member.checkPassword(loginRequest.memberPassword());
