@@ -1,18 +1,19 @@
 package com.example.investment_api.member.infrastructure.auth;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.investment_api.member.domain.auth.TokenProvider;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 @Getter
@@ -25,29 +26,22 @@ public class JwtTokenProvider implements TokenProvider {
     @Value("${jwt.expiration-period}")
     private int expirationPeriod;
 
-    private Key key;
+    private Algorithm key;
 
     @PostConstruct
     private void createKey() {
-        key = Keys.hmacShaKeyFor(secret.getBytes());
+        key = Algorithm.HMAC256(secret);
     }
-
 
     @Override
-    public String create(Long id) {
-        Claims claims = Jwts.claims();
-        claims.put("memberId", id);
-        return createToken(claims);
-    }
-
-    private String createToken(Claims claims) {
+    public String create(Long memberId) {
         Date now = new Date();
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiredAt(now))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        return JWT.create()
+                .withClaim("memberId", memberId)
+                .withIssuedAt(now)
+                .withExpiresAt(expiredAt(now))
+                .withJWTId(UUID.randomUUID().toString())
+                .sign(key);
     }
 
     private Date expiredAt(Date createdAt) {
@@ -56,11 +50,13 @@ public class JwtTokenProvider implements TokenProvider {
 
     @Override
     public Long extract(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("memberId", Long.class);
+        return verifyToken(token).getClaim("memberId")
+                .asLong();
+    }
+
+    private DecodedJWT verifyToken(String token) {
+        JWTVerifier verifier = JWT.require(key)
+                .build();
+        return verifier.verify(token);
     }
 }
