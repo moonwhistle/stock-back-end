@@ -2,8 +2,8 @@ package com.example.investment_api.global.exception.exceptionhandler;
 
 import com.example.investment_api.global.exception.exceptionhandler.dto.ErrorResponse;
 
-import com.example.investment_api.global.exception.exceptions.CustomErrorCode;
-import com.example.investment_api.global.exception.exceptions.CustomException;
+import com.example.investment_api.global.exception.exceptions.GlobalErrorCode;
+import com.example.investment_api.global.exception.exceptions.GlobalException;
 
 import org.springframework.http.ResponseEntity;
 
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponse> handleException(CustomException e) {
-        CustomErrorCode customErrorCode = e.getCustomErrorCode();
-        ErrorResponse errorResponse = new ErrorResponse(customErrorCode.getCustomCode(), customErrorCode.getMessage());
-        return ResponseEntity.status(customErrorCode.getHttpStatus()).body(errorResponse);
+    @ExceptionHandler(GlobalException.class)
+    public ResponseEntity<ErrorResponse> handleException(GlobalException e) {
+        GlobalErrorCode globalErrorCode = e.getGlobalErrorCode();
+        ErrorResponse errorResponse = new ErrorResponse(globalErrorCode.getCustomCode(), globalErrorCode.getMessage());
+        return ResponseEntity.status(globalErrorCode.getHttpStatus()).body(errorResponse);
     }
 }
