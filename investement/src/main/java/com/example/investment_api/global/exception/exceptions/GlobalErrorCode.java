@@ -6,8 +6,9 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum GlobalErrorCode {
 
-    ALREADY_EXIST_MEMBER_EMAIL(HttpStatus.BAD_REQUEST, "A001", "유저 이메일 이미 존재합니다."),
-    NOT_SAME_PASSWORD(HttpStatus.BAD_REQUEST, "A002", "비밀번호가 일치하지 않습니다.");
+    EXIST_TOKEN_HEADER_EXCEPTION(HttpStatus.NOT_FOUND, "T001","토큰을 찾을 수 없습니다."),
+    TOKEN_TIME_EXCEPTION(HttpStatus.CONFLICT, "T002", "토큰 시간이 만료되었습니다."),
+    TOKEN_VERIFY_EXCEPTION(HttpStatus.CONFLICT, "T003", "토큰을 검증할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String customCode;
